@@ -1,0 +1,24 @@
+{
+  "name": "playwright-mcp-cn",
+  "version": "1.0.0",
+  "description": "Playwright MCP 中文文档与快速配置指南 - 为 AI 助手提供浏览器自动化能力",
+  "keywords": [
+    "playwright",
+    "mcp",
+    "browser-automation",
+    "chinese",
+    "cursor",
+    "claude-code",
+    "ai-assistant"
+  ],
+  "author": "toyball <toyball860721@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/toyball860721/playwright-mcp-cn.git"
+  },
+  "bugs": {
+    "url": "https://github.com/toyball860721/playwright-mcp-cn/issues"
+  },
+  "homepage": "https://github.com/toyball860721/playwright-mcp-cn#readme"
+}
