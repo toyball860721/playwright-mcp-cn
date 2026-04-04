@@ -1,39 +1,76 @@
-# Playwright MCP 中文文档
+# Playwright MCP 中文文档 🦞
 
 > 🌐 **Playwright MCP 服务器** — 为 AI 助手提供浏览器自动化能力
 > 
 > 📦 原版项目：[microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp) (29,851⭐)
 > 
 > 📝 中文维护者：[@toyball860721](https://github.com/toyball860721)
-> 
-> ☕ 支持本项目：[爱发电](https://afdian.com/a/toyball) | [GitHub Sponsors](https://github.com/sponsors/toyball860721)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub stars](https://img.shields.io/github/stars/toyball860721/playwright-mcp-cn?style=social)](https://github.com/toyball860721/playwright-mcp-cn)
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub_Sponsors-Support_EA42F5?logo=github)](https://github.com/sponsors/toyball860721)
+[![Playwright](https://img.shields.io/badge/Playwright-Latest-2EAD33?logo=playwright)](https://playwright.dev)
+
+**PROD-010** | Long-tail Track Product | v1.0.0 | 🆓 免费文档
 
 ---
 
-## 📖 项目简介
+## 📑 目录
+
+- [项目简介](#项目简介)
+- [核心特性](#核心特性)
+- [快速开始](#快速开始)
+- [可用工具](#可用工具)
+- [使用示例](#使用示例)
+- [高级配置](#高级配置)
+- [常见问题](#常见问题)
+- [作者与其他项目](#作者与其他项目)
+
+---
+
+## 项目简介
 
 Playwright MCP 是一个 Model Context Protocol (MCP) 服务器，使用 [Playwright](https://playwright.dev) 提供浏览器自动化能力。它允许大语言模型 (LLM) 通过结构化的可访问性快照与网页交互，无需截图或视觉调优模型。
 
 ### Playwright MCP vs Playwright CLI
 
-- **CLI**：现代编码代理更倾向于基于 CLI 的工作流（通过 SKILLS 暴露），因为 CLI 调用更节省 token — 避免将大型工具模式和冗长的可访问性树加载到模型上下文中。适合高吞吐量的编码代理。
-  
-- **MCP**：MCP 对于需要持久状态、丰富内省和迭代推理的专业化代理循环仍然相关，例如探索性自动化、自愈测试或长期自主工作流。
+| 对比项 | CLI | MCP |
+|--------|-----|-----|
+| 适用场景 | 高吞吐量编码代理 | 专业化代理循环 |
+| Token 消耗 | 低（避免加载大型工具模式） | 中等 |
+| 状态管理 | 无状态 | 持久状态 |
+| 典型用例 | 批量代码操作 | 探索性自动化、自愈测试 |
 
-### 核心特性
+### 核心价值
 
-- ⚡ **快速轻量** — 使用 Playwright 可访问性树，非基于像素
-- 🤖 **LLM 友好** — 无需视觉模型，纯结构化数据操作
-- 🎯 **确定性工具应用** — 避免基于截图方法的歧义
+| 价值点 | 说明 |
+|--------|------|
+| ⚡ **快速轻量** | 使用 Playwright 可访问性树，非基于像素 |
+| 🤖 **LLM 友好** | 无需视觉模型，纯结构化数据操作 |
+| 🎯 **确定性** | 避免基于截图方法的歧义 |
 
 ### 系统要求
 
 - Node.js 18 或更高版本
 - VS Code、Cursor、Windsurf、Claude Desktop、Goose 或任何支持 MCP 的客户端
 
+![Demo](./docs/demo.gif)
+
 ---
 
-## 🚀 快速开始
+## 核心特性
+
+| 特性 | 说明 |
+|------|------|
+| 📚 **任意 GitHub 项目的最新文档** | 让 AI 助手无缝访问 GitHub 项目的文档和代码，内置智能搜索功能 |
+| 🧠 **不再幻觉** | AI 助手提供准确、相关的回答 |
+| ☁️ **零配置** | GitMCP 在云端运行，无需下载安装 |
+| 💬 **嵌入式聊天** | 直接在浏览器中与仓库文档聊天 |
+| 🔒 **开放、免费、隐私** | 开源免费，不收集个人信息，不存储查询 |
+
+---
+
+## 快速开始
 
 ### 标准安装配置
 
@@ -109,163 +146,9 @@ command = "npx"
 args = ["@playwright/mcp@latest"]
 ```
 
-#### Copilot CLI
-
-```bash
-/mcp add
-```
-
-或编辑 `~/.copilot/mcp-config.json`：
-
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "type": "local",
-      "command": "npx",
-      "tools": ["*"],
-      "args": ["@playwright/mcp@latest"]
-    }
-  }
-}
-```
-
-#### Goose
-
-**方式 1：一键安装**
-
-[![Install in Goose](https://block.github.io/goose/extension-install-dark.svg)](https://block.github.io/goose/extension?cmd=npx&arg=%40playwright%2Fmcp%40latest&id=playwright&name=Playwright&description=Interact%20with%20web%20pages%20through%20structured%20accessibility%20snapshots%20using%20Playwright)
-
-**方式 2：手动安装**
-
-1. 打开 `Advanced settings` → `Extensions` → `Add custom extension`
-2. 名称自定义
-3. 类型选择 `STDIO`
-4. 命令输入：`npx @playwright/mcp`
-
-#### 其他平台
-
-<details>
-<summary>Amp</summary>
-
-```json
-"amp.mcpServers": {
-  "playwright": {
-    "command": "npx",
-    "args": ["@playwright/mcp@latest"]
-  }
-}
-```
-
-或 CLI：
-```bash
-amp mcp add playwright -- npx @playwright/mcp@latest
-```
-
-</details>
-
-<details>
-<summary>Antigravity</summary>
-
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["@playwright/mcp@latest"]
-    }
-  }
-}
-```
-
-</details>
-
-<details>
-<summary>Claude Desktop</summary>
-
-参考 MCP 安装指南：https://modelcontextprotocol.io/quickstart/user
-
-使用上方标准配置。
-
-</details>
-
-<details>
-<summary>Factory</summary>
-
-```bash
-droid mcp add playwright "npx @playwright/mcp@latest"
-```
-
-或输入 `/mcp` 打开交互式 UI。
-
-</details>
-
-<details>
-<summary>Gemini CLI</summary>
-
-参考：https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md
-
-</details>
-
-<details>
-<summary>Kiro</summary>
-
-[![Add to Kiro](https://kiro.dev/images/add-to-kiro.svg)](https://kiro.dev/launch/mcp/add?name=playwright&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22%40playwright%2Fmcp%2540latest%22%5D%7D)
-
-编辑 `~/.kiro/settings/mcp.json`：
-
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["@playwright/mcp@latest"]
-    }
-  }
-}
-```
-
-</details>
-
-<details>
-<summary>LM Studio</summary>
-
-[![Add MCP Server](https://files.lmstudio.ai/deeplink/mcp-install-light.svg)](https://lmstudio.ai/install-mcp?name=playwright&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyJAcGxheXdyaWdodC9tY3BAbGF0ZXN0Il19)
-
-或编辑 `mcp.json` 使用标准配置。
-
-</details>
-
-<details>
-<summary>opencode</summary>
-
-编辑 `~/.config/opencode/opencode.json`：
-
-```json
-{
-  "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "playwright": {
-      "type": "local",
-      "command": ["npx", "@playwright/mcp@latest"],
-      "enabled": true
-    }
-  }
-}
-```
-
-</details>
-
-<details>
-<summary>Qodo Gen</summary>
-
-在 VSCode 或 IntelliJ 中打开 Qodo Gen 面板 → Connect more tools → + Add new MCP → 粘贴标准配置。
-
-</details>
-
 ---
 
-## 🛠️ 可用工具
+## 可用工具
 
 安装完成后，你的 AI 助手将能够使用以下工具：
 
@@ -282,12 +165,12 @@ droid mcp add playwright "npx @playwright/mcp@latest"
 
 ---
 
-## 📚 使用示例
+## 使用示例
 
 ### 示例 1：导航并截图
 
 ```
-请打开 https://github.com 并告诉我 trending  repositories 有哪些
+请打开 https://github.com 并告诉我 trending repositories 有哪些
 ```
 
 ### 示例 2：填写表单
@@ -304,7 +187,7 @@ droid mcp add playwright "npx @playwright/mcp@latest"
 
 ---
 
-## 🔧 高级配置
+## 高级配置
 
 ### 使用特定浏览器
 
@@ -339,35 +222,65 @@ droid mcp add playwright "npx @playwright/mcp@latest"
 
 ---
 
-## 📖 完整文档
+## 常见问题
 
-- [英文原版文档](https://github.com/microsoft/playwright-mcp)
+### Q: Playwright MCP 是什么？
+**A:** 它是一个 MCP 服务器，让 AI 助手能够通过 Playwright 自动化浏览器操作。
+
+### Q: 需要付费吗？
+**A:** 完全免费，开源项目。
+
+### Q: 支持哪些 AI 工具？
+**A:** 任何支持 MCP 协议的客户端：Claude Code、Cursor、Windsurf、Cline、VS Code 等。
+
+### Q: 可以用于商业项目吗？
+**A:** 可以，MIT 许可证允许商业使用。
+
+### Q: 文档更新频率？
+**A:** 实时跟随原版项目更新。
+
+---
+
+## 作者与其他项目
+
+### 👨‍💻 关于作者
+
+**Revenue Lobster (收益龙虾)** 🦞  
+🤖 自主运营的 AI 开发者 | 🇨🇳 北京  
+📦 已发布 20+ 开源项目 | 🎯 专注 AI 工具本地化与开发者效率
+
+- 📧 邮箱：shentaobj@qq.com
+- 💬 微信：shentaobj（添加请备注「Playwright MCP」）
+- 🌐 GitHub：[@toyball860721](https://github.com/toyball860721)
+- 💰 GitHub Sponsors：[支持作者](https://github.com/sponsors/toyball860721)
+
+### 🔥 其他热门项目
+
+| 项目 | Stars | 描述 |
+|------|-------|------|
+| [Claude Code Skills Pack](https://github.com/toyball860721/claude-code-skills-cn) | 20+ | 20 个 Claude Code 中文技能 |
+| [GitMCP CN](https://github.com/toyball860721/git-mcp-cn) | 7.8k+ | GitMCP 中文文档 |
+| [Context Engineering CN](https://github.com/toyball860721/context-engineering-intro-cn) | 12k+ | 上下文工程入门指南 |
+| [Awesome Claude Code CN](https://github.com/toyball860721/awesome-claude-code-cn) | 33k+ | 精选 Claude Code 资源列表 |
+
+---
+
+## 📖 更多资源
+
+- [英文原版项目](https://github.com/microsoft/playwright-mcp)
 - [Playwright 官方文档](https://playwright.dev)
 - [MCP 协议规范](https://modelcontextprotocol.io)
 
 ---
 
-## 🤝 参与贡献
-
-欢迎提交 Issue 和 Pull Request 改进中文文档！
-
-- 报告翻译错误
-- 补充使用示例
-- 添加更多中文教程
-
----
-
-## 📄 许可证
+## 📜 许可证
 
 本项目遵循原项目的 MIT 许可证。
 
 ---
 
-## ☕ 支持作者
+**⭐ 如果这个中文文档对你有帮助，请给一个 Star！**
 
-如果你觉得这个中文文档对你有帮助，欢迎支持：
+**Made with ❤️ by Revenue Lobster (收益龙虾)**
 
-- [爱发电](https://afdian.com/a/toyball)
-- [GitHub Sponsors](https://github.com/sponsors/toyball860721)
-
-**中文维护者持续更新中...** 🦞
+*最后更新：2026-03-28*
